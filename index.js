@@ -390,7 +390,7 @@ app.put('/api/carrito/:id_item', authenticateToken, (req, res) => {
     return res.status(400).json({ error: 'La cantidad es obligatoria y debe ser mayor que 0' });
   }
 
-  // Asegurarse de actualizar solo ítems pertenecientes al usuario actual
+
   const sql = 'UPDATE carrito_items SET cantidad = ? WHERE id_item = ? AND id_usuario = ?';
   connection.query(sql, [cantidad, id_item, req.user.id], (err, results) => {
     if (err) {
@@ -434,7 +434,7 @@ app.post('/api/comprar', authenticateToken, (req, res) => {
     return res.status(400).json({ error: 'El carrito está vacío.' });
   }
 
-  // Simular una operación de compra (reducir stock, generar factura, etc.)
+  //operación de compra (reducir stock, generar factura, etc.)
   const errores = [];
   const operacionesExitosas = [];
 
@@ -463,7 +463,6 @@ app.post('/api/comprar', authenticateToken, (req, res) => {
           operacionesExitosas.push(item);
         }
 
-        // Si todos los productos fueron procesados, responder al cliente
         if (operacionesExitosas.length + errores.length === carrito.length) {
           if (errores.length > 0) {
             return res.status(200).json({
