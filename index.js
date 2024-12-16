@@ -18,8 +18,8 @@ const allowedOrigins = [
   'http://192.168.1.94', //pc
   'exp://192.168.1.165:19000',
   'http://192.168.137.206',
-  'http://10.168.3.11'
-  
+  'http://10.168.3.11',
+  'https://render.com/docs/web-services#port-binding'
 ];
 
 // Configuración de CORS
@@ -136,7 +136,7 @@ function authenticateToken(req, res, next) {
 // CRUD Productos con imágenes
 app.post('/api/productos', authenticateToken, upload.single('imagen'), (req, res) => {
   const { nombre_producto, precio, cantidad, id_categoria } = req.body;
-  const imagen_url = req.file ? `http://192.168.1.94:3000/uploads/${req.file.filename}` : null;
+  const imagen_url = req.file ? `https://render.com/docs/web-services#port-binding/uploads/${req.file.filename}` : null;
   
 
   const sql = 'INSERT INTO productos (nombre_producto, precio, cantidad, id_categoria, imagen_url) VALUES (?, ?, ?, ?, ?)';
@@ -163,7 +163,7 @@ app.get('/api/productos', authenticateToken, (req, res) => {
 app.put('/api/productos/:id', authenticateToken, upload.single('imagen'), (req, res) => {
   const { id } = req.params;
   const { nombre_producto, precio, cantidad, id_categoria } = req.body;
-  const imagen_url = req.file ? `http://192.168.1.94:3000/uploads/${req.file.filename}` : null;
+  const imagen_url = req.file ? `https://render.com/docs/web-services#port-binding/uploads/${req.file.filename}` : null;
   
 
   // Construir la consulta SQL y los parámetros
@@ -482,8 +482,11 @@ app.post('/api/comprar', authenticateToken, (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log('Servidor iniciado en el puerto 3000');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log('Servidor iniciado en el puerto ${PORT}');
 });
+
 
 
